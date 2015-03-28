@@ -3,7 +3,7 @@ import os
 from collections import Counter
 
 def main(current_filepath,new_filepath):
-    df = read_csv(current_filepath)
+    df = pd.read_csv(current_filepath)
     c = Counter()
     for programlist in df.programlist.values:
         if pd.notnull(programlist):
