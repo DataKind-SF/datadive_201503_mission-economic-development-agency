@@ -1,0 +1,17 @@
+Client Household Demographics.wrangle: This is a plain text file with the Wrangle script (Trifacta's language) documenting how I cleaned the data.
+	- Dropped columns as per MEDA instructions
+	- Standardized values in free-form columns
+	- Generate standardized City and State fields by joining to reference data
+
+Client Household Demographics-old.wrangle: An earlier version of the Wrangle script.
+
+Cleaned_Client_Household_Demographics.csv: the output of the Wrangle script
+
+Cleaned_Client_Household_Demographics.tde: Tableau Data Extract format output of the Wrangle script
+
+Cleaned_Client_Household_Demographics-old.csv: output of the older Wrangle script
+
+../free-zipcode-database-Primary.csv: zipcode geo data from http://federalgovernmentzipcodes.us
+
+Questions?  Joe Hellerstein. joe@trifacta.com.
+Note: I will unfortunately be offline Friday/Saturday of the DataDive.  Jesika Hariya (jhariya@trifacta.com) may be able to help while I'm off.

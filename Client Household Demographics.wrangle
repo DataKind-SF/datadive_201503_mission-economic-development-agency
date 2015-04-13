@@ -1,0 +1,58 @@
+load location: 'id:\/\/7'
+splitrows col: column1 on: '\r' quote: '\"'
+split col: column1 on: ',' limit: 41 quote: '\"'
+header
+drop col: Signed_MPN_consent, San_Francisco_District, Primary_language_spoken_at_home, Created_Date, School, School_Address, Client_Household_Medical_Home_Place_Child, Client_Household_Family_Schools, Client_Household_MPN_Household, Client_Household_MPN_Flag, Client_Household_MPN_Population_Level, Number_of_Referrals, All_Active_Services, All_Services, Sum_Group_Class_Direct_Services_Enrolled, Num_Group_Class_Direct_Services_Enrolled, Number_of_Services, Number_of_Active_Services, Sum_of_Direct_Services_Enrollled, All_Programs, All_Active_Programs, Number_of_Active_Programs
+drop col: Client_Contact_ID
+replace col: Primary_State_Province on: `{delim}` with: '' global: true
+settype col: Current_Grade_or_Pre_K type: 'String'
+settype col: Number_of_Completed_Programs type: 'Integer'
+settype col: Primary_Zip_Postal_Code type: 'Zipcode'
+set col: Hispanic_Origin value: '' row: Hispanic_Origin == 'Choose not to respond'
+rename col: Primary_City to: 'Primary_City_Reported'
+rename col: Primary_State_Province to: 'Primary_State_Province_Reported'
+set col: Hispanic_Origin value: 'Hispanic Origin' row: Hispanic_Origin == 'Hispanic'
+settype col: Hispanic_Origin type: 'String'
+set col: Hispanic_Origin value: 'Not of Hispanic Origin' row: Hispanic_Origin == 'Non Hispanic'
+settype col: Hispanic_Origin type: 'String'
+set col: Hispanic_Origin value: 'Not of Hispanic Origin' row: Hispanic_Origin == 'White'
+settype col: Hispanic_Origin type: 'String'
+set col: Hispanic_Origin value: 'Not of Hispanic Origin' row: Hispanic_Origin == '1177294'
+set col: Hispanic_Origin value: '' row: Hispanic_Origin == 'Choose not to respond'
+set col: Hispanic_Origin value: '' row: Hispanic_Origin == 'decline'
+set col: Hispanic_Origin value: 'Hispanic Origin' row: Hispanic_Origin == 'Latino'
+set col: Hispanic_Origin value: 'Not of Hispanic Origin' row: Hispanic_Origin == 'NEITHER'
+set col: Hispanic_Origin value: 'Not of Hispanic Origin' row: Hispanic_Origin == 'NO'
+set col: Hispanic_Origin value: 'Not of Hispanic Origin' row: Hispanic_Origin == 'Non Hispanic'
+set col: Hispanic_Origin value: 'Hispanic Origin' row: Hispanic_Origin == 'Yes'
+set col: Race value: 'African American' row: Race == 'Afro American'
+set col: Race value: 'HISPANIC' row: (Race == 'Latino') || ((Race == 'Latina') || (Race == 'Mexican'))
+set col: Race value: 'Chose not to respond' row: (Race == 'NA') || ((Race == 'NO ANSWER') || (Race == 'NONE'))
+set col: Race value: 'Pacific Islander' row: Race == 'Pacific Island'
+set col: Employment_Status value: 'Employed full-time' row: Employment_Status == 'Full Time'
+set col: Employment_Status value: 'Employed part-time' row: Employment_Status == 'Part Time'
+set col: Employment_Status value: 'Unemployed' row: Employment_Status == 'Not Working'
+set col: Employment_Status value: 'Not working because of disability' row: Employment_Status == 'Disability'
+set col: Employment_Status value: 'Employed full-time' row: matches(Employment_Status, /^[Ff][Uu][Ll][Ll].*[Tt][Ii][Mm][Ee]/)
+set col: Employment_Status value: 'Employed part-time' row: Employment_Status == 'Part Time'
+set col: Employment_Status value: 'Employed' row: Employment_Status == 'Yes'
+set col: Education_level value: '4 Year Degree' row: Education_level == '\"4-year College Degree (BA, BS)\"'
+set col: Education_level value: '2 Year Degree' row: Education_level == '2-year College Degree (Associates)'
+set col: Education_level value: 'High School\/GED' row: Education_level == 'High School'
+set col: Education_level value: 'Less than High School' row: Education_level == 'Less Than HS'
+set col: Education_level value: 'Master\'s Degree or more' row: Education_level == 'Masters Degree'
+set col: Education_level value: '' row: (Education_level == 'No') || ((Education_level == 'n\/a') || ((Education_level == 'NA') || (Education_level == 'NO ANSWER')))
+join with: Zip Codes col: cleaned_table_40.Primary_Zip_Postal_Code, {Zip Codes}.Zipcode, cleaned_table_40.Contact_ID, cleaned_table_40.Gender, cleaned_table_40.Primary_City_Reported, cleaned_table_40.Primary_State_Province_Reported, cleaned_table_40.Preferred_Language, cleaned_table_40.Hispanic_Origin, cleaned_table_40.Race, cleaned_table_40.Marital_Status, cleaned_table_40.Employment_Status, cleaned_table_40.Education_level, cleaned_table_40.Family_Role, cleaned_table_40.Current_Grade_or_Pre_K, cleaned_table_40.Age, cleaned_table_40.Client_Household_Client_HH_Easy_ID, cleaned_table_40.Client_Household_Medical_Care_for_Child, cleaned_table_40.Number_of_Completed_Programs, cleaned_table_40.Number_of_Programs, cleaned_table_40.Has_Email_Address, {Zip Codes}.City, {Zip Codes}.State row: cleaned_table_40.Primary_Zip_Postal_Code == {Zip Codes}.Zipcode
+move col: City,State before: Preferred_Language
+rename col: City to: 'City_from_Zip'
+rename col: State to: 'State_from_Zip'
+set col: Race value: 'Hispanic' row: (Race == 'SPANISH') || ((Race == 'HISPANIC') || matches(Race, /LATIN[AO]/))
+set col: Employment_Status value: '' row: Employment_Status == 'NA'
+set col: Education_level value: '' row: matches(Education_level, /Married.+/)
+drop col: Number_of_Completed_Programs
+drop col: Number_of_Programs
+set col: Preferred_Language value: '' row: (Preferred_Language == 'NO') || ((Preferred_Language == 'N') || ((Preferred_Language == 'NONE') || (Preferred_Language == 'NA')))
+set col: Preferred_Language value: '' row: (Preferred_Language == 'SP') || (Preferred_Language == 'SPA')
+set col: Preferred_Language value: '' row: Preferred_Language == 'Unknown'
+set col: Preferred_Language value: 'THAI\/LAO' row: Preferred_Language == 'THAI'
+set col: Preferred_Language value: '' row: Preferred_Language == 'Unknown'
